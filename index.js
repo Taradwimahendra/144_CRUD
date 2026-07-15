@@ -74,3 +74,22 @@ app.put("/api/biodata/:id", async (req, res) => {
     res.status(500).json({ status: "error", message: err.message });
   }
 });
+
+
+app.delete("/api/biodata/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await pool.query("DELETE FROM biodata WHERE id = $1", [id]);
+    res.status(200).json({
+      status: "success",
+      message: `Data dengan ID ${id} berhasil dihapus`,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server berjalan di http://localhost:${PORT}`);
+});
